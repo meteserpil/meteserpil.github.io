@@ -390,6 +390,10 @@ footer a:hover { color: var(--accent); }
   .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
   .links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+/* very wide monitors: let the column grow a little so the page isn't an
+   island of content, while keeping lines short enough to read */
+@media (min-width: 1700px) { :root { --max: 1280px; } }
+
 /* the header runs out of room well before the phone breakpoint: 7 nav items
    plus the CV button overflow and push the page sideways until ~1000px */
 @media (max-width: 1000px) {
