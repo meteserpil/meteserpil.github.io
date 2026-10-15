@@ -181,10 +181,7 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 }
 
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-/* visible by default: if the animation never runs, the hero must not stay blank */
-@media (prefers-reduced-motion: no-preference) {
-  .rise { opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
-}
+.rise { opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
 .d1 { animation-delay: .05s; } .d2 { animation-delay: .15s; } .d3 { animation-delay: .27s; }
 .d4 { animation-delay: .4s; } .d5 { animation-delay: .52s; } .d6 { animation-delay: .3s; }
 
