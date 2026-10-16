@@ -1083,6 +1083,33 @@ footer a:hover { color: var(--accent); }
     ], '.psql-back');
   }
 
+  // a short synthesised click on every press inside the explorer — no audio
+  // file to load, and a failure here must never break the explorer itself
+  var audio = null;
+  function tick() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!audio) audio = new Ctx();
+      if (audio.state === 'suspended') audio.resume();
+      var t = audio.currentTime;
+      var osc = audio.createOscillator();
+      var gain = audio.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(1800, t);
+      osc.frequency.exponentialRampToValueAtTime(700, t + 0.025);
+      gain.gain.setValueAtTime(0.05, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
+      osc.connect(gain);
+      gain.connect(audio.destination);
+      osc.start(t);
+      osc.stop(t + 0.05);
+    } catch (e) {}
+  }
+  host.addEventListener('click', function (e) {
+    if (e.target.closest('button')) tick();
+  });
+
   showTables();
 })();
 </script>
