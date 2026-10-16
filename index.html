@@ -198,14 +198,6 @@ ul, ol { list-style: none; margin: 0; padding: 0; }
 .marquee[data-paused="true"] .marquee-track { animation-play-state: paused; }
 .marquee ul { display: flex; gap: var(--s7); padding-right: var(--s7); font-family: var(--mono); font-size: .92rem; color: var(--muted); white-space: nowrap; }
 @keyframes scroll { to { transform: translateX(-50%); } }
-.marquee-pause {
-  position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%);
-  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line);
-  background: var(--bg); color: var(--muted); font-size: .7rem; line-height: 1;
-  display: grid; place-items: center; cursor: pointer; padding: 0;
-  transition: color .15s, border-color .15s;
-}
-.marquee-pause:hover { color: var(--text); border-color: var(--accent); }
 
 /* Stats */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
@@ -412,7 +404,6 @@ footer a:hover { color: var(--accent); }
 }
 @media (max-width: 760px) {
   .portrait { max-width: 150px; border-radius: 18px; margin-inline: auto; }
-  .marquee-pause { right: var(--s2); }
   .marquee-viewport {
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 78%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 6%, #000 78%, transparent);
@@ -433,7 +424,6 @@ footer a:hover { color: var(--accent); }
   .marquee-track { animation: none; width: 100%; }
   .marquee ul { flex-wrap: wrap; white-space: normal; }
   .marquee-track ul[aria-hidden="true"] { display: none; }
-  .marquee-pause { display: none; }
   .wordmark .cursor { animation: none; opacity: .6; }
   .btn-primary:hover { transform: none; }
 }
@@ -509,7 +499,6 @@ footer a:hover { color: var(--accent); }
         </ul>
       </div>
     </div>
-    <button class="marquee-pause" type="button" id="marquee-pause" aria-label="Pause the scrolling technology list">&#9611;&#9611;</button>
   </section>
 
   <!-- Stats -->
@@ -728,17 +717,11 @@ footer a:hover { color: var(--accent); }
   track.appendChild(clone);
 
   var marquee = document.getElementById('marquee');
-  var pauseBtn = document.getElementById('marquee-pause');
-  function setPaused(paused) {
-    marquee.setAttribute('data-paused', String(paused));
-    pauseBtn.innerHTML = paused ? '&#9654;' : '&#9611;&#9611;';
-    pauseBtn.setAttribute('aria-label', (paused ? 'Play' : 'Pause') + ' the scrolling technology list');
-  }
-  pauseBtn.addEventListener('click', function () {
-    setPaused(marquee.getAttribute('data-paused') !== 'true');
-  });
+  function setPaused(paused) { marquee.setAttribute('data-paused', String(paused)); }
   marquee.addEventListener('mouseenter', function () { setPaused(true); });
+  marquee.addEventListener('mouseleave', function () { if (!reduced.matches) setPaused(false); });
   marquee.addEventListener('focusin', function () { setPaused(true); });
+  marquee.addEventListener('focusout', function () { if (!reduced.matches) setPaused(false); });
   if (reduced.matches) setPaused(true);
 
   /* ---------- theme ---------- */
