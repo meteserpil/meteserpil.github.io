@@ -892,6 +892,7 @@ footer a:hover { color: var(--accent); }
     publications: {
       label: 'publications',
       columns: ['id', 'year', 'title'],
+      link: 'title',
       rows: [
         { id: 1, year: 2026, title: 'Transformative Technologies in Neurosurgery: a Systematic Literature Review',
           record: {
@@ -1012,12 +1013,12 @@ footer a:hover { color: var(--accent); }
     table.appendChild(thead);
 
     var tbody = el('tbody');
+    var linkCol = t.link || t.columns[1]; // which column opens the record
     t.rows.forEach(function (row) {
       var tr = el('tr');
-      t.columns.forEach(function (col, i) {
+      t.columns.forEach(function (col) {
         var td = el('td', col === 'id' ? 'num' : null);
-        // the second column opens the record; everything else is plain text
-        if (i === 1 && row.record) {
+        if (col === linkCol && row.record) {
           var btn = el('button', 'cell', String(row[col]));
           btn.type = 'button';
           btn.setAttribute('data-row', String(row.id));
