@@ -275,6 +275,17 @@ dl.facts { margin: 0; display: grid; align-content: start; }
 .proj .tags { margin-top: auto; padding-top: var(--s5); }
 .proj .body { display: flex; flex-direction: column; }
 .proj .link { display: inline-block; margin-top: var(--s4); font-size: .95rem; color: var(--accent); }
+.proj .shot {
+  margin-top: auto; padding-top: var(--s5);
+}
+.proj .shot img {
+  width: 100%; height: auto; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--code-bg);
+}
+.proj .shot figcaption {
+  margin-top: var(--s2); font-family: var(--mono); font-size: .72rem;
+  color: var(--muted); line-height: 1.4;
+}
 .proj .link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 .paper {
@@ -584,6 +595,11 @@ footer a:hover { color: var(--accent); }
             <p class="sub">An AI agent builder for Turkish banking voice calls, built at the Freya hackathon.</p>
             <ul class="tags" role="list"><li>Python</li><li>LLM orchestration</li><li>Cloudflare Workers</li><li>REST</li></ul>
             <a class="link" href="https://github.com/meteserpil/BuildTheBuilder" target="_blank" rel="noopener" aria-label="Build the Builder on GitHub (opens in a new tab)">See it on GitHub ↗</a>
+            <figure class="shot">
+              <img src="freya-eval.webp" width="1200" height="549" loading="lazy" decoding="async"
+                   alt="The evaluation dashboard for the agent builder: a stacked area chart of pass and fail results climbing to 100%, over an iteration running 120 of 120 simulated calls at 32 in parallel.">
+              <figcaption>Evaluation run: 120 simulated calls, 32 in parallel.</figcaption>
+            </figure>
           </div>
           <ul class="points" role="list">
             <li>Built a Python tool that reads a bank's unstructured documents — briefs, emails, meeting notes, API contracts, PDFs — and generates a working Turkish phone agent, with no manual edits.</li>
