@@ -517,7 +517,7 @@ footer a:hover { color: var(--accent); }
     <div class="stats">
       <div class="stat"><b>216<span aria-hidden="true">/250</span></b><span>score on the Freya hackathon test set</span></div>
       <div class="stat"><b>5</b><span>months building backend services at Sebit</span></div>
-      <div class="stat"><b>4</b><span>projects across AI agents, VR, data and NLP</span></div>
+      <div class="stat"><b>5</b><span>projects across AI agents, VR, data and NLP</span></div>
       <div class="stat"><b>1</b><span>IEEE paper on technology in neurosurgery</span></div>
     </div>
   </div>
@@ -575,7 +575,7 @@ footer a:hover { color: var(--accent); }
   <!-- Projects -->
   <section class="block" id="projects" aria-label="Projects">
     <div class="wrap">
-      <header class="sec-head"><h2>Projects</h2><p>Four projects and one publication.</p></header>
+      <header class="sec-head"><h2>Projects</h2><p>Five projects and one publication.</p></header>
       <div class="proj-grid">
         <article class="proj wide">
           <div class="body">
@@ -593,6 +593,19 @@ footer a:hover { color: var(--accent); }
             <li>Built KVKK safeguards into the generated agents — data minimisation, no exposure of card numbers — and tested them against adversarial prompt-injection scenarios.</li>
             <li>Deployed a mock banking API on Cloudflare Workers covering seven services with contract-exact responses and error codes.</li>
           </ul>
+        </article>
+
+        <article class="proj">
+          <p class="meta">Privacy · LLM infrastructure</p>
+          <h3>Kalkan — KVKK-compliant LLM gateway</h3>
+          <p class="sub">Java 21, WebFlux, Docker, GitHub Actions</p>
+          <ul class="points spaced" role="list">
+            <li>Built an OpenAI-compatible gateway that masks Turkish personal data — TCKN, IBAN, card numbers — before prompts reach the LLM, and restores it in streamed responses.</li>
+            <li>Applied checksum validation (TCKN, IBAN mod-97, Luhn) to avoid false positives.</li>
+            <li>Set up CI/CD running tests on every push, Docker images published to GHCR, and Prometheus metrics.</li>
+          </ul>
+          <ul class="tags" role="list"><li>Java 21</li><li>WebFlux</li><li>Docker</li><li>GHCR</li></ul>
+          <a class="link" href="https://github.com/meteserpil/kalkan" target="_blank" rel="noopener" aria-label="Kalkan on GitHub (opens in a new tab)">See it on GitHub ↗</a>
         </article>
 
         <article class="proj">
@@ -813,7 +826,18 @@ footer a:hover { color: var(--accent); }
               'Mock banking API on Cloudflare Workers covering seven services.'
             ]
           } },
-        { id: 2, name: 'MedVisVR', year: 2026, stack: 'Unity, C#, Python, nnU-Net',
+        { id: 2, name: 'Kalkan', year: 2026, stack: 'Java 21, WebFlux, Docker, GitHub Actions',
+          record: {
+            context: 'KVKK-compliant, OpenAI-compatible LLM gateway',
+            result: 'Masks TCKN, IBAN and card numbers before prompts reach the LLM, and restores them in streamed responses',
+            url: 'https://github.com/meteserpil/kalkan',
+            notes: [
+              'Checksum validation (TCKN, IBAN mod-97, Luhn) to avoid false positives.',
+              'CI/CD running tests on every push, Docker images published to GHCR.',
+              'Prometheus metrics exposed for monitoring.'
+            ]
+          } },
+        { id: 3, name: 'MedVisVR', year: 2026, stack: 'Unity, C#, Python, nnU-Net',
           record: {
             context: 'Term project — VR medical imaging platform for Meta Quest 3',
             result: 'Basis of the IEEE IISEC 2026 publication',
@@ -824,7 +848,7 @@ footer a:hover { color: var(--accent); }
               'Real-time rendering optimization, VR interaction and UI work.'
             ]
           } },
-        { id: 3, name: 'Earthquake Detection and Report System', year: 2025, stack: 'Apache Spark (Scala), Python, MongoDB',
+        { id: 4, name: 'Earthquake Detection and Report System', year: 2025, stack: 'Apache Spark (Scala), Python, MongoDB',
           record: {
             context: 'Real-time disaster response over social media streams',
             result: 'Identifies emergency gathering areas and incident hotspots as data arrives',
@@ -834,7 +858,7 @@ footer a:hover { color: var(--accent); }
               'Modular design, environment configuration and workflow automation.'
             ]
           } },
-        { id: 4, name: 'Offensive Language Detection in Turkish', year: 2025, stack: 'Python, PyTorch, BERT',
+        { id: 5, name: 'Offensive Language Detection in Turkish', year: 2025, stack: 'Python, PyTorch, BERT',
           record: {
             context: 'Toxic language detection and classification for Turkish text',
             result: 'Compared preprocessing techniques against accuracy',
