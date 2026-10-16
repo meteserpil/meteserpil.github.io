@@ -288,7 +288,14 @@ dl.facts { margin: 0; display: grid; align-content: start; }
 .paper a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* psql explorer */
-.psql-body { padding: var(--s4); font-family: var(--mono); font-size: .85rem; color: var(--code-text); }
+.psql-body {
+  padding: var(--s4); font-family: var(--mono); font-size: .85rem; color: var(--code-text);
+  max-height: 70vh; overflow-y: auto; /* output accumulates, so cap the height */
+}
+.psql-block + .psql-block {
+  margin-top: var(--s5); padding-top: var(--s5);
+  border-top: 1px dashed var(--code-rule);
+}
 .psql-prompt { color: var(--code-com); margin-bottom: var(--s3); word-break: break-word; }
 .psql-prompt b { color: var(--code-key); font-weight: 500; }
 .psql-scroll { overflow-x: auto; }
@@ -319,12 +326,6 @@ table.pg caption { text-align: left; color: var(--code-com); padding-bottom: var
 .pg .cell:hover { color: var(--code-key); }
 .pg .plain { color: var(--code-text); white-space: normal; min-width: 14ch; }
 .psql-foot { display: flex; flex-wrap: wrap; gap: var(--s3) var(--s5); align-items: center; margin-top: var(--s4); color: var(--code-com); font-size: .8rem; }
-.psql-back {
-  background: none; border: 1px solid var(--code-rule); border-radius: 999px;
-  color: var(--code-text); font: inherit; font-size: .8rem; padding: 2px var(--s3);
-  cursor: pointer; transition: border-color .15s, color .15s;
-}
-.psql-back:hover { color: var(--code-key); border-color: var(--code-key); }
 .psql-rec { display: grid; gap: 6px; }
 .psql-rec .rule { color: var(--code-com); }
 .psql-rec dl { display: grid; grid-template-columns: minmax(80px, auto) minmax(0, 1fr); gap: 6px var(--s3); margin: 0; }
@@ -899,28 +900,23 @@ footer a:hover { color: var(--accent); }
     p.appendChild(document.createTextNode(' ' + query));
     return p;
   }
-  function foot(text, backLabel, backFn) {
+  function foot(text) {
     var f = el('div', 'psql-foot');
     f.appendChild(el('span', null, text));
-    if (backFn) {
-      var b = el('button', 'psql-back', backLabel);
-      b.type = 'button';
-      b.addEventListener('click', backFn);
-      f.appendChild(b);
-    }
     return f;
   }
-  function render(nodes, focusSelector) {
-    host.innerHTML = '';
-    nodes.forEach(function (n) { host.appendChild(n); });
-    if (focusSelector) {
-      var t = host.querySelector(focusSelector);
-      if (t) t.focus();
+  // every query is appended below the last one, the way a psql session reads
+  function append(nodes) {
+    var block = el('div', 'psql-block');
+    nodes.forEach(function (n) { block.appendChild(n); });
+    host.appendChild(block);
+    if (host.children.length > 1) {
+      block.scrollIntoView({ block: 'nearest', behavior: reduced.matches ? 'auto' : 'smooth' });
     }
   }
 
   // \dt — the list of tables
-  function showTables(focus) {
+  function showTables() {
     var scroll = el('div', 'psql-scroll');
     var table = el('table', 'pg');
     table.appendChild(el('caption', null, 'List of relations'));
@@ -948,8 +944,7 @@ footer a:hover { color: var(--accent); }
     table.appendChild(tbody);
     scroll.appendChild(table);
 
-    render([prompt('\\dt'), scroll, foot('(' + tableNames.length + ' rows) — select a table name to query it.')],
-      focus ? '[data-table="' + focus + '"]' : null);
+    append([prompt('\\dt'), scroll, foot('(' + tableNames.length + ' rows) — select a table name to query it.')]);
   }
 
   // SELECT * FROM <table>
@@ -990,8 +985,7 @@ footer a:hover { color: var(--accent); }
       ? '(' + t.rows.length + ' rows) — select a row to expand it.'
       : '(' + t.rows.length + ' rows)';
 
-    render([prompt('SELECT * FROM ' + name + ';'), scroll, foot(hint, '\\dt', function () { showTables(name); })],
-      '.cell');
+    append([prompt('SELECT * FROM ' + name + ';'), scroll, foot(hint)]);
   }
 
   // \x — one expanded record
@@ -1028,11 +1022,11 @@ footer a:hover { color: var(--accent); }
       box.appendChild(ul);
     }
 
-    render([
+    append([
       prompt('SELECT * FROM ' + name + ' WHERE id = ' + id + ' \\gx'),
       box,
-      foot('(1 row)', 'back to ' + name, function () { showTable(name); })
-    ], '.psql-back');
+      foot('(1 row)')
+    ]);
   }
 
   showTables();
